@@ -17,17 +17,16 @@ import {
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuthContext } from '@/contexts/AuthContext';
-import { LayoutDashboard, Package, ShoppingCart, BarChart3, Settings, LogOut, UserCircle, Printer, ChevronDown } from 'lucide-react';
+import { LayoutDashboard, Package, ShoppingCart, BarChart3, Settings, LogOut, UserCircle, Printer } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 const adminNavItems = [
-  { href: '/admin/dashboard', label: 'Dashboard', icon: <LayoutDashboard size={20}/> },
-  { href: '/admin/products', label: 'Products', icon: <Package size={20}/> },
-  { href: '/admin/orders', label: 'Orders', icon: <ShoppingCart size={20}/> },
-  { href: '/admin/reports', label: 'AI Reports', icon: <BarChart3 size={20}/> },
-  // Add more admin links if needed
+  { href: '/admin/dashboard', label: 'Dashboard', icon: <LayoutDashboard size={18}/> },
+  { href: '/admin/products', label: 'Products', icon: <Package size={18}/> },
+  { href: '/admin/orders', label: 'Orders', icon: <ShoppingCart size={18}/> },
+  { href: '/admin/reports', label: 'AI Reports', icon: <BarChart3 size={18}/> },
 ];
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
@@ -55,55 +54,55 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
       <Sidebar 
         collapsible="icon" 
         className="border-r border-sidebar-border bg-sidebar text-sidebar-foreground"
-        variant="sidebar" // Keep as default sidebar, not floating or inset
+        variant="sidebar"
       >
         <SidebarHeader className="p-4 flex flex-col items-center gap-3 border-b border-sidebar-border/50">
-           <Link href="/" className="flex items-center gap-2.5 text-2xl font-bold text-sidebar-primary font-headline mb-2 group-data-[state=collapsed]:hidden">
-             <Printer className="h-7 w-7" />
+           <Link href="/" className="flex items-center gap-2 text-xl font-bold text-sidebar-primary font-headline mb-2 group-data-[state=collapsed]:hidden">
+             <Printer className="h-6 w-6" />
              DhirPrint AI
            </Link>
-           <Link href="/" className="items-center gap-2 text-xl font-bold text-sidebar-primary font-headline mb-2 hidden group-data-[state=collapsed]:flex">
-             <Printer className="h-7 w-7" />
+           <Link href="/" className="items-center gap-2 text-lg font-bold text-sidebar-primary font-headline mb-2 hidden group-data-[state=collapsed]:flex">
+             <Printer className="h-6 w-6" />
            </Link>
           <div className="flex flex-col items-center gap-1.5 group-data-[state=collapsed]:hidden">
-            <Avatar className="h-20 w-20 border-4 border-primary/70">
+            <Avatar className="h-16 w-16 border-2 border-primary/50">
               <AvatarImage src={currentUser.photoURL || undefined} />
-              <AvatarFallback className="text-2xl bg-secondary text-secondary-foreground">{currentUser.displayName ? currentUser.displayName.charAt(0).toUpperCase() : <UserCircle />}</AvatarFallback>
+              <AvatarFallback className="text-xl bg-secondary text-secondary-foreground">{currentUser.displayName ? currentUser.displayName.charAt(0).toUpperCase() : <UserCircle />}</AvatarFallback>
             </Avatar>
-            <p className="font-semibold text-md mt-1">{currentUser.displayName}</p>
+            <p className="font-semibold text-sm mt-1">{currentUser.displayName}</p>
             <p className="text-xs text-sidebar-foreground/70">{currentUser.email}</p>
           </div>
         </SidebarHeader>
-        <SidebarContent className="p-3">
+        <SidebarContent className="p-2">
           <SidebarMenu>
             {adminNavItems.map((item) => (
               <SidebarMenuItem key={item.href}>
                 <Link href={item.href} legacyBehavior passHref>
                   <SidebarMenuButton
                     isActive={pathname === item.href || (item.href !== '/admin/dashboard' && pathname.startsWith(item.href))}
-                    tooltip={{ children: item.label, side: 'right', className: 'ml-2 bg-popover text-popover-foreground' }}
-                    className="justify-start text-sm py-2.5 group-data-[state=expanded]:px-3 group-data-[state=collapsed]:px-2.5 data-[active=true]:bg-sidebar-primary/20 data-[active=true]:text-sidebar-primary hover:bg-sidebar-primary/10"
+                    tooltip={{ children: item.label, side: 'right', className: 'ml-2 bg-popover text-popover-foreground text-xs' }}
+                    className="justify-start text-sm py-2 group-data-[state=expanded]:px-3 group-data-[state=collapsed]:px-2 data-[active=true]:bg-sidebar-primary/20 data-[active=true]:text-sidebar-primary hover:bg-sidebar-primary/10"
                   >
                     {item.icon}
-                    <span className="group-data-[state=expanded]:inline group-data-[state=collapsed]:hidden ml-1">{item.label}</span>
+                    <span className="group-data-[state=expanded]:inline group-data-[state=collapsed]:hidden ml-2">{item.label}</span>
                   </SidebarMenuButton>
                 </Link>
               </SidebarMenuItem>
             ))}
           </SidebarMenu>
         </SidebarContent>
-        <SidebarFooter className="p-4 mt-auto border-t border-sidebar-border/50">
-            <Button onClick={handleLogout} variant="ghost" className="w-full justify-start group-data-[state=expanded]:inline-flex group-data-[state=collapsed]:justify-center group-data-[state=collapsed]:aspect-square hover:bg-destructive/20 hover:text-destructive text-sidebar-foreground/80">
-              <LogOut className="mr-2 h-5 w-5 group-data-[state=collapsed]:mr-0" />
+        <SidebarFooter className="p-3 mt-auto border-t border-sidebar-border/50">
+            <Button onClick={handleLogout} variant="ghost" className="w-full justify-start group-data-[state=expanded]:inline-flex group-data-[state=collapsed]:justify-center group-data-[state=collapsed]:aspect-square hover:bg-destructive/20 hover:text-destructive text-sidebar-foreground/80 text-sm">
+              <LogOut className="mr-2 h-4 w-4 group-data-[state=collapsed]:mr-0" />
               <span className="group-data-[state=expanded]:inline group-data-[state=collapsed]:hidden">Logout</span>
             </Button>
         </SidebarFooter>
       </Sidebar>
-      <SidebarInset className="bg-background"> {/* Removed bg-muted/30 for cleaner dark look */}
-        <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b border-border/50 bg-card/80 backdrop-blur-md px-4 sm:px-6">
+      <SidebarInset className="bg-background">
+        <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b border-border/50 bg-card/90 backdrop-blur-md px-4 sm:px-6">
             <SidebarTrigger className="sm:hidden text-muted-foreground hover:text-primary" /> 
-            <h1 className="text-2xl md:text-3xl font-bold text-foreground capitalize">
-                {pathname.split('/').pop()?.replace(/-/g, ' ') || 'Dashboard'}
+            <h1 className="text-xl md:text-2xl font-semibold text-foreground capitalize">
+                {pathname.split('/').filter(Boolean).pop()?.replace(/-/g, ' ') || 'Dashboard'}
             </h1>
         </header>
         <main className="flex-1 p-4 md:p-6 lg:p-8">

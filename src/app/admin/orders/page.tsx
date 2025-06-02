@@ -6,14 +6,18 @@ import type { Order } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { MoreHorizontal, Eye, Edit, Loader2, Search, Filter } from 'lucide-react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { MoreHorizontal, Eye, Edit, Loader2, Search, Filter, CreditCard } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
-import OrderSteps from '@/components/orders/OrderSteps'; // Re-use if applicable for admin view
+import OrderSteps from '@/components/orders/OrderSteps';
 import Image from 'next/image';
+import { Card } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
+import { Label } from '@/components/ui/label';
+
 
 // Mock function to fetch orders. Replace with actual Firestore fetching.
 async function getAdminOrders(): Promise<Order[]> {
@@ -65,7 +69,7 @@ export default function AdminOrdersPage() {
     if (!editingOrderForStatus || !newStatus) return;
     // TODO: Implement Firestore update logic for order status
     setOrders(orders.map(o => o.id === editingOrderForStatus.id ? { ...o, status: newStatus as Order['status'], updatedAt: new Date() } : o));
-    toast({ title: "Order Status Updated", description: `Order ${editingOrderForStatus.id} status changed to ${newStatus}.` });
+    toast({ title: "Order Status Updated", description: `Order ${editingOrderForStatus.id.substring(0,12)}... status changed to ${newStatus}.` });
     setIsStatusFormOpen(false);
     setEditingOrderForStatus(null);
     setNewStatus('');
@@ -73,10 +77,10 @@ export default function AdminOrdersPage() {
   
   const getStatusBadgeVariant = (status: Order['status']): "default" | "secondary" | "destructive" | "outline" => {
     switch (status) {
-      case 'delivered': return 'default'; // Greenish in theme if custom
-      case 'shipped': return 'secondary'; // Bluish
-      case 'processing': return 'outline'; // Yellowish/Orange-ish if custom, or default outline
-      case 'pending_payment': return 'outline';
+      case 'delivered': return 'default'; // Blueish-Green for success
+      case 'shipped': return 'secondary'; // Another shade of blue
+      case 'processing': return 'outline'; // Yellow/Orange (or keep as outline if theme doesn't support well)
+      case 'pending_payment': return 'outline'; // Default outline
       case 'cancelled': return 'destructive';
       case 'failed': return 'destructive';
       default: return 'outline';
@@ -98,71 +102,74 @@ export default function AdminOrdersPage() {
   
   return (
     <div className="space-y-6">
-       <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+       <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 bg-card rounded-lg shadow">
         <div className="relative w-full sm:max-w-xs">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input 
-            placeholder="Search orders (ID, User, Name)..." 
+            placeholder="Search orders..." 
             value={searchTerm} 
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10"
+            className="pl-9 h-9"
           />
         </div>
         <div className="flex items-center gap-2 w-full sm:w-auto">
-            <Filter className="h-5 w-5 text-muted-foreground"/>
+            <Filter className="h-4 w-4 text-muted-foreground"/>
             <Select value={statusFilter} onValueChange={(value) => setStatusFilter(value as Order['status'] | 'all')}>
-                <SelectTrigger className="w-full sm:w-[180px]">
+                <SelectTrigger className="w-full sm:w-[180px] h-9 text-xs">
                     <SelectValue placeholder="Filter by status" />
                 </SelectTrigger>
                 <SelectContent>
-                    <SelectItem value="all">All Statuses</SelectItem>
+                  <SelectGroup>
+                    <SelectLabel className="text-xs">Status</SelectLabel>
+                    <SelectItem value="all" className="text-xs">All Statuses</SelectItem>
                     {orderStatuses.map(status => (
-                        <SelectItem key={status} value={status} className="capitalize">{status.replace('_', ' ')}</SelectItem>
+                        <SelectItem key={status} value={status} className="capitalize text-xs">{status.replace('_', ' ')}</SelectItem>
                     ))}
+                  </SelectGroup>
                 </SelectContent>
             </Select>
         </div>
       </div>
 
-      <Card className="shadow-lg">
+      <Card className="shadow-lg border-border/70">
+        <Table>
          <TableHeader>
-          <TableRow className="border-b-0">
-            <TableHead>Order ID</TableHead>
-            <TableHead>Customer</TableHead>
-            <TableHead>Date</TableHead>
-            <TableHead className="text-right">Total</TableHead>
-            <TableHead className="text-center">Status</TableHead>
-            <TableHead className="text-center w-[100px]">Actions</TableHead>
+          <TableRow className="border-b-border/50">
+            <TableHead className="text-xs">Order ID</TableHead>
+            <TableHead className="text-xs">Customer</TableHead>
+            <TableHead className="text-xs">Date</TableHead>
+            <TableHead className="text-right text-xs">Total</TableHead>
+            <TableHead className="text-center text-xs">Status</TableHead>
+            <TableHead className="text-center w-[80px] text-xs">Actions</TableHead>
           </TableRow>
         </TableHeader>
-        <Table>
           <TableBody>
             {filteredOrders.length > 0 ? filteredOrders.map((order) => (
-              <TableRow key={order.id}>
+              <TableRow key={order.id} className="text-sm">
                 <TableCell className="font-medium text-primary hover:underline">
-                  <button onClick={() => handleViewDetails(order)}>{order.id.substring(0,12)}...</button>
+                  <button onClick={() => handleViewDetails(order)} className="text-xs">{order.id.substring(0,12)}...</button>
                 </TableCell>
-                <TableCell>{order.shippingAddress.fullName} <span className="text-xs text-muted-foreground">({order.userId.substring(0,6)}...)</span></TableCell>
-                <TableCell>{new Date(order.createdAt).toLocaleDateString()}</TableCell>
-                <TableCell className="text-right">${order.totalAmount.toFixed(2)}</TableCell>
+                <TableCell className="text-xs">{order.shippingAddress.fullName} <span className="text-xs text-muted-foreground">({order.userId.substring(0,6)}...)</span></TableCell>
+                <TableCell className="text-xs">{new Date(order.createdAt).toLocaleDateString()}</TableCell>
+                <TableCell className="text-right text-xs">${order.totalAmount.toFixed(2)}</TableCell>
                 <TableCell className="text-center">
-                  <Badge variant={getStatusBadgeVariant(order.status)} className="capitalize">{order.status.replace('_', ' ')}</Badge>
+                  <Badge variant={getStatusBadgeVariant(order.status)} className="capitalize text-[10px] px-2 py-0.5">{order.status.replace('_', ' ')}</Badge>
                 </TableCell>
                 <TableCell className="text-center">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" className="h-8 w-8 p-0">
+                      <Button variant="ghost" className="h-7 w-7 p-0">
                         <span className="sr-only">Open menu</span>
                         <MoreHorizontal className="h-4 w-4" />
                       </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                      <DropdownMenuItem onClick={() => handleViewDetails(order)}>
-                        <Eye className="mr-2 h-4 w-4" /> View Details
+                    <DropdownMenuContent align="end" className="text-xs">
+                      <DropdownMenuLabel className="text-xs">Actions</DropdownMenuLabel>
+                      <DropdownMenuItem onClick={() => handleViewDetails(order)} className="text-xs">
+                        <Eye className="mr-2 h-3.5 w-3.5" /> View Details
                       </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => openStatusUpdateForm(order)}>
-                        <Edit className="mr-2 h-4 w-4" /> Update Status
+                      <DropdownMenuItem onClick={() => openStatusUpdateForm(order)} className="text-xs">
+                        <Edit className="mr-2 h-3.5 w-3.5" /> Update Status
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
@@ -170,7 +177,7 @@ export default function AdminOrdersPage() {
               </TableRow>
             )) : (
                  <TableRow>
-                    <TableCell colSpan={6} className="h-24 text-center text-muted-foreground">
+                    <TableCell colSpan={6} className="h-24 text-center text-muted-foreground text-sm">
                       No orders found matching your criteria.
                     </TableCell>
                   </TableRow>
@@ -181,35 +188,40 @@ export default function AdminOrdersPage() {
 
       {/* Order Detail View Dialog */}
       <Dialog open={isDetailViewOpen} onOpenChange={setIsDetailViewOpen}>
-        <DialogContent className="sm:max-w-[600px] md:max-w-[750px] lg:max-w-[900px] max-h-[90vh] flex flex-col">
-          <DialogHeader>
-            <DialogTitle className="text-2xl font-headline">Order Details: {selectedOrder?.id}</DialogTitle>
-            <DialogDescription>
-              Customer: {selectedOrder?.shippingAddress.fullName} ({selectedOrder?.userId})
+        <DialogContent className="sm:max-w-[600px] md:max-w-[750px] lg:max-w-[900px] max-h-[90vh] flex flex-col bg-card border-border/70">
+          <DialogHeader className="pb-4 border-b border-border/50">
+            <DialogTitle className="text-xl font-semibold">Order Details: {selectedOrder?.id.substring(0,15)}...</DialogTitle>
+            <DialogDescription className="text-xs">
+              Customer: {selectedOrder?.shippingAddress.fullName} ({selectedOrder?.userId.substring(0,8)}...)
             </DialogDescription>
           </DialogHeader>
           {selectedOrder && (
-            <div className="flex-grow overflow-y-auto pr-2 space-y-4 py-4">
-              <OrderSteps currentStatus={selectedOrder.status} createdAt={new Date(selectedOrder.createdAt)} />
-              <h3 className="font-semibold text-lg mt-4">Items:</h3>
+            <div className="flex-grow overflow-y-auto pr-2 space-y-4 py-4 text-sm">
+              <OrderSteps 
+                currentStatus={selectedOrder.status} 
+                createdAt={new Date(selectedOrder.createdAt)}
+                shippedAt={(selectedOrder as any).shippedAt ? new Date((selectedOrder as any).shippedAt) : undefined} // Assuming direct Date objects for mock
+                deliveredAt={(selectedOrder as any).deliveredAt ? new Date((selectedOrder as any).deliveredAt) : undefined}
+              />
+              <h3 className="font-semibold text-md mt-4">Items:</h3>
               <ul className="space-y-2">
                 {selectedOrder.items.map(item => (
-                  <li key={item.id} className="flex gap-3 p-2 border rounded-md items-center">
-                    <Image src={item.productImage || 'https://placehold.co/60x60.png'} alt={item.productName} width={60} height={60} className="rounded object-cover" data-ai-hint="product photo"/>
+                  <li key={item.id} className="flex gap-3 p-3 border border-border/50 rounded-md items-center bg-background/30">
+                    <Image src={item.productImage || 'https://placehold.co/60x60.png'} alt={item.productName} width={50} height={50} className="rounded object-cover" data-ai-hint="product photo"/>
                     <div className="flex-grow">
-                      <p className="font-medium">{item.productName}</p>
+                      <p className="font-medium text-sm">{item.productName}</p>
                       <p className="text-xs text-muted-foreground">Qty: {item.quantity} - ${item.unitPrice.toFixed(2)} each</p>
                       <p className="text-xs text-muted-foreground">{item.material} / {item.size}</p>
                     </div>
-                    <p className="font-semibold">${item.totalPrice.toFixed(2)}</p>
+                    <p className="font-semibold text-sm">${item.totalPrice.toFixed(2)}</p>
                   </li>
                 ))}
               </ul>
-              <Separator/>
+              <Separator className="my-3 bg-border/50"/>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                    <h3 className="font-semibold text-lg">Shipping Address:</h3>
-                    <address className="not-italic text-sm text-muted-foreground">
+                    <h3 className="font-semibold text-md">Shipping Address:</h3>
+                    <address className="not-italic text-xs text-muted-foreground leading-normal">
                         <p>{selectedOrder.shippingAddress.fullName}</p>
                         <p>{selectedOrder.shippingAddress.addressLine1}</p>
                         {selectedOrder.shippingAddress.addressLine2 && <p>{selectedOrder.shippingAddress.addressLine2}</p>}
@@ -218,10 +230,10 @@ export default function AdminOrdersPage() {
                     </address>
                 </div>
                  <div>
-                    <h3 className="font-semibold text-lg">Payment Details:</h3>
-                    <p className="text-sm text-muted-foreground">Method: {selectedOrder.paymentMethod}</p>
-                    <p className="text-sm text-muted-foreground">Total: ${selectedOrder.totalAmount.toFixed(2)}</p>
-                    <p className="text-sm text-muted-foreground">Status: <Badge variant={getStatusBadgeVariant(selectedOrder.status)} className="capitalize">{selectedOrder.status.replace('_',' ')}</Badge></p>
+                    <h3 className="font-semibold text-md">Payment Details:</h3>
+                    <p className="text-xs text-muted-foreground">Method: {selectedOrder.paymentMethod}</p>
+                    <p className="text-xs text-muted-foreground">Total: ${selectedOrder.totalAmount.toFixed(2)}</p>
+                    <p className="text-xs text-muted-foreground">Status: <Badge variant={getStatusBadgeVariant(selectedOrder.status)} className="capitalize text-[10px] px-2 py-0.5">{selectedOrder.status.replace('_',' ')}</Badge></p>
                  </div>
               </div>
             </div>
@@ -231,28 +243,30 @@ export default function AdminOrdersPage() {
       
       {/* Update Status Dialog */}
       <Dialog open={isStatusFormOpen} onOpenChange={setIsStatusFormOpen}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="sm:max-w-md bg-card border-border/70">
           <DialogHeader>
-            <DialogTitle className="font-headline">Update Order Status</DialogTitle>
-            <DialogDescription>Order ID: {editingOrderForStatus?.id}</DialogDescription>
+            <DialogTitle className="font-semibold">Update Order Status</DialogTitle>
+            <DialogDescription className="text-xs">Order ID: {editingOrderForStatus?.id.substring(0,15)}...</DialogDescription>
           </DialogHeader>
           <div className="py-4 space-y-3">
-            <Label htmlFor="status-select">New Status</Label>
+            <Label htmlFor="status-select" className="text-xs">New Status</Label>
             <Select value={newStatus} onValueChange={(value) => setNewStatus(value as Order['status'])}>
-              <SelectTrigger id="status-select">
+              <SelectTrigger id="status-select" className="h-9 text-xs">
                 <SelectValue placeholder="Select new status" />
               </SelectTrigger>
               <SelectContent>
-                {orderStatuses.map(status => (
-                  <SelectItem key={status} value={status} className="capitalize">{status.replace('_', ' ')}</SelectItem>
-                ))}
+                <SelectGroup>
+                  <SelectLabel className="text-xs">Statuses</SelectLabel>
+                  {orderStatuses.map(status => (
+                    <SelectItem key={status} value={status} className="capitalize text-xs">{status.replace('_', ' ')}</SelectItem>
+                  ))}
+                </SelectGroup>
               </SelectContent>
             </Select>
-             {/* Optionally add tracking link input if status is 'shipped' */}
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsStatusFormOpen(false)}>Cancel</Button>
-            <Button onClick={handleUpdateStatus} disabled={!newStatus || newStatus === editingOrderForStatus?.status}>
+            <Button variant="outline" onClick={() => setIsStatusFormOpen(false)} size="sm">Cancel</Button>
+            <Button onClick={handleUpdateStatus} disabled={!newStatus || newStatus === editingOrderForStatus?.status} size="sm">
               Update Status
             </Button>
           </DialogFooter>
@@ -262,3 +276,6 @@ export default function AdminOrdersPage() {
     </div>
   );
 }
+
+// Added CreditCard icon for consistency, ensure it's imported from lucide-react
+// Make sure OrderSteps handles the new date types correctly (Timestamp to Date)
