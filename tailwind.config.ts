@@ -10,8 +10,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        body: ['Inter', 'sans-serif'],
-        headline: ['Inter', 'sans-serif'],
+        body: ['Manrope', 'sans-serif'], // Updated font
+        headline: ['Manrope', 'sans-serif'], // Updated font
         code: ['monospace'],
       },
       colors: {
@@ -67,7 +67,7 @@ export default {
         },
       },
       borderRadius: {
-        lg: 'var(--radius)',
+        lg: 'var(--radius)', // using the value from globals.css (0.75rem)
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
       },

@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
-import { Printer, Palette, Lightbulb, ArrowRight, Sparkles, ShoppingBag } from "lucide-react";
+import { Printer, Palette, Lightbulb, ArrowRight, Sparkles, ShoppingBag, Zap } from "lucide-react";
 
 const productCategories = [
   {
@@ -11,7 +11,7 @@ const productCategories = [
     description: "Durable and vibrant flex banners for all your advertising needs.",
     link: "/products/flex-banners",
     icon: <Printer className="h-8 w-8 text-primary" />,
-    image: "https://placehold.co/600x400.png", // Replace with actual or relevant placeholder
+    image: "https://placehold.co/600x400.png",
     imageHint: "banner printing"
   },
   {
@@ -19,7 +19,7 @@ const productCategories = [
     description: "Sleek and modern acrylic signs for a professional look.",
     link: "/products/acrylic-signs",
     icon: <Palette className="h-8 w-8 text-primary" />,
-    image: "https://placehold.co/600x400.png", // Replace with actual or relevant placeholder
+    image: "https://placehold.co/600x400.png",
     imageHint: "acrylic sign"
   },
   {
@@ -27,7 +27,7 @@ const productCategories = [
     description: "Eye-catching custom neon signs to make your brand glow.",
     link: "/products/neon-signs",
     icon: <Lightbulb className="h-8 w-8 text-primary" />,
-    image: "https://placehold.co/600x400.png", // Replace with actual or relevant placeholder
+    image: "https://placehold.co/600x400.png",
     imageHint: "neon sign"
   },
 ];
@@ -41,7 +41,7 @@ const features = [
   {
     title: "Premium Quality Materials",
     description: "We use top-tier materials and printing techniques for results that impress and last.",
-    icon: <Printer className="h-10 w-10 text-primary mb-4" />,
+    icon: <Zap className="h-10 w-10 text-primary mb-4" />, // Changed icon for variety
   },
   {
     title: "Limitless Customization",
@@ -56,14 +56,21 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="text-center py-20 md:py-32">
         <div className="max-w-3xl mx-auto">
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 text-foreground tracking-tight">
+           <div 
+            className="absolute inset-0 -z-10 overflow-hidden" 
+            style={{ 
+              background: 'radial-gradient(circle at top center, hsl(var(--primary) / 0.15) 0%, transparent 50%), radial-gradient(circle at bottom left, hsl(var(--primary) / 0.1) 0%, transparent 40%), radial-gradient(circle at bottom right, hsl(var(--secondary) / 0.1) 0%, transparent 40%)',
+              filter: 'blur(80px)' 
+            }}
+          />
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold mb-6 text-foreground tracking-tight">
             AI-Powered Custom Prints
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground mb-10 leading-relaxed">
             Craft stunning, personalized prints with ease. From vibrant flex banners to glowing neon signs, bring your vision to life using the power of AI.
           </p>
           <Link href="/products">
-            <Button size="lg" className="text-lg px-10 py-7 font-semibold">
+            <Button size="lg" className="text-lg px-10 py-7 font-semibold shadow-lg hover:shadow-primary/40 transition-all duration-300 transform hover:scale-105">
               Explore Our Products <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
           </Link>
@@ -74,13 +81,13 @@ export default function HomePage() {
       <section>
         <div className="text-center mb-12 md:mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight">Discover Our Creations</h2>
-            <p className="text-md text-muted-foreground mt-2 max-w-xl mx-auto">Choose a category to start designing your custom print masterpiece.</p>
+            <p className="text-md text-muted-foreground mt-3 max-w-xl mx-auto">Choose a category to start designing your custom print masterpiece.</p>
         </div>
         <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
           {productCategories.map((category) => (
-            <Card key={category.name} className="bg-card border-border/70 overflow-hidden shadow-lg hover:shadow-primary/10 transition-shadow duration-300 flex flex-col group">
+            <Card key={category.name} className="bg-card border-border/70 overflow-hidden shadow-xl hover:shadow-primary/20 transition-shadow duration-300 flex flex-col group">
               <CardHeader className="p-0">
-                <div className="relative h-52 w-full overflow-hidden">
+                <div className="relative h-56 w-full overflow-hidden">
                   <Image 
                     src={category.image} 
                     alt={category.name} 
@@ -89,7 +96,7 @@ export default function HomePage() {
                     data-ai-hint={category.imageHint} 
                     className="group-hover:scale-105 transition-transform duration-500"
                   />
-                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/0"></div>
+                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/10"></div>
                 </div>
               </CardHeader>
               <CardContent className="p-6 flex-grow flex flex-col">
@@ -99,9 +106,9 @@ export default function HomePage() {
                 <CardTitle className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors">{category.name}</CardTitle>
                 <CardDescription className="text-muted-foreground mb-4 text-sm flex-grow">{category.description}</CardDescription>
               </CardContent>
-              <CardFooter className="p-6 mt-auto bg-card/50 border-t border-border/50">
+              <CardFooter className="p-6 mt-auto bg-card/80 border-t border-border/50">
                  <Link href={category.link} className="w-full">
-                    <Button variant="outline" className="w-full border-primary/70 text-primary hover:bg-primary hover:text-primary-foreground transition-colors duration-300 py-3 group-hover:border-primary">
+                    <Button variant="outline" className="w-full border-primary/70 text-primary hover:bg-primary hover:text-primary-foreground transition-colors duration-300 py-3 group-hover:border-primary shadow-sm hover:shadow-md">
                         View {category.name} <ArrowRight className="ml-2 h-4 w-4"/>
                     </Button>
                  </Link>
@@ -115,13 +122,13 @@ export default function HomePage() {
       <section className="py-16 md:py-20">
         <div className="text-center mb-12 md:mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight">Why <span className="text-primary">DhirPrint AI</span>?</h2>
-            <p className="text-md text-muted-foreground mt-2 max-w-xl mx-auto">
+            <p className="text-md text-muted-foreground mt-3 max-w-xl mx-auto">
               Experience the future of custom printing with our innovative platform.
             </p>
         </div>
         <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
           {features.map((feature) => (
-            <Card key={feature.title} className="bg-card p-6 md:p-8 text-center border-border/70 shadow-lg hover:shadow-secondary/10 transition-shadow">
+            <Card key={feature.title} className="bg-card p-6 md:p-8 text-center border-border/70 shadow-xl hover:shadow-secondary/20 transition-shadow">
               {feature.icon}
               <h3 className="text-xl font-semibold mb-3 text-foreground">{feature.title}</h3>
               <p className="text-muted-foreground text-sm">{feature.description}</p>
@@ -131,7 +138,14 @@ export default function HomePage() {
       </section>
 
       {/* Call to Action Section */}
-      <section className="text-center py-16 md:py-24 bg-card/80 rounded-lg shadow-xl border border-border/50">
+      <section className="text-center py-16 md:py-24 bg-card/90 rounded-lg shadow-2xl border border-border/50 relative overflow-hidden">
+        <div 
+            className="absolute inset-0 -z-10" 
+            style={{ 
+              background: 'radial-gradient(circle at center, hsl(var(--primary) / 0.1) 0%, transparent 60%)',
+              filter: 'blur(50px)' 
+            }}
+          />
         <ShoppingBag className="h-16 w-16 text-primary mx-auto mb-6" />
         <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground tracking-tight">Ready to Create?</h2>
         <p className="text-lg text-muted-foreground mb-8 max-w-xl mx-auto">
@@ -139,12 +153,12 @@ export default function HomePage() {
         </p>
         <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
           <Link href="/products">
-            <Button size="lg" className="px-8 py-6 font-semibold text-base">
+            <Button size="lg" className="px-8 py-6 font-semibold text-base shadow-lg hover:shadow-primary/40 transition-all duration-300 transform hover:scale-105">
               Start Designing Now
             </Button>
           </Link>
           <Link href="/contact">
-            <Button variant="outline" size="lg" className="px-8 py-6 font-semibold text-base">
+            <Button variant="outline" size="lg" className="px-8 py-6 font-semibold text-base border-primary/70 text-primary hover:bg-primary hover:text-primary-foreground shadow-sm hover:shadow-md">
               Contact Us
             </Button>
           </Link>
