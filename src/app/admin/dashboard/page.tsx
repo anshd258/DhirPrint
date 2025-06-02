@@ -1,16 +1,15 @@
 
-"use client"; // Client component for charts and interactions
+"use client"; 
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { BarChart, LineChart, PieChart as PieChartIcon, ShoppingCart, Users, TrendingUp } from "lucide-react"; // Icons for chart types and KPIs
-import { ResponsiveContainer, Bar, XAxis, YAxis, Tooltip, Legend, Line, Pie, Cell } from 'recharts'; // Assuming recharts is installed via shadcn/ui
+import { BarChart, LineChart as LineChartIconLucide, PieChart as PieChartIcon, ShoppingCart, Users, TrendingUp, Activity, DollarSign, UsersRound, Target } from "lucide-react";
+import { ResponsiveContainer, Bar, XAxis, YAxis, Tooltip, Legend, Line, Pie, Cell, CartesianGrid } from 'recharts';
 import { generateSalesReport } from '@/ai/flows/generate-sales-report';
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
 
-// Mock data for charts - replace with actual data fetching
 const monthlySalesData = [
   { month: 'Jan', sales: 4000, revenue: 2400 },
   { month: 'Feb', sales: 3000, revenue: 1398 },
@@ -26,7 +25,15 @@ const productCategoryData = [
   { name: 'Neon Signs', value: 200 },
   { name: 'Other', value: 100 },
 ];
-const CHART_COLORS = ['hsl(var(--chart-1))', 'hsl(var(--chart-2))', 'hsl(var(--chart-3))', 'hsl(var(--chart-4))'];
+
+const CHART_COLORS_THEME = [
+  'hsl(var(--chart-1))', 
+  'hsl(var(--chart-2))', 
+  'hsl(var(--chart-3))', 
+  'hsl(var(--chart-4))',
+  'hsl(var(--chart-5))'
+];
+
 
 export default function AdminDashboardPage() {
   const { toast } = useToast();
@@ -37,7 +44,7 @@ export default function AdminDashboardPage() {
     setIsGeneratingReport(true);
     setReportData(null);
     try {
-      const criteria = `Sales report for the last quarter, highlighting best-selling product categories and revenue trends.`;
+      const criteria = `Sales report for the last quarter, highlighting best-selling product categories and revenue trends. Include visualizable data points.`;
       const result = await generateSalesReport({ criteria });
       setReportData(result);
       toast({ title: "Sales Report Generated", description: "The AI has compiled your sales report."});
@@ -49,27 +56,39 @@ export default function AdminDashboardPage() {
     }
   };
 
-
-  // Placeholder KPIs
   const kpis = [
-    { title: "Total Revenue", value: "$12,345", change: "+12.5%", icon: <BarChart className="h-6 w-6 text-primary" /> },
-    { title: "New Orders", value: "234", change: "+5.2%", icon: <ShoppingCart className="h-6 w-6 text-secondary" /> },
-    { title: "Active Users", value: "1,287", change: "-2.1%", icon: <Users className="h-6 w-6 text-accent" /> },
-    { title: "Conversion Rate", value: "4.7%", change: "+0.8%", icon: <TrendingUp className="h-6 w-6 text-primary" /> },
+    { title: "Total Revenue", value: "$12,345", change: "+12.5%", icon: <DollarSign className="h-7 w-7 text-primary" />, colorClass: "text-primary" },
+    { title: "New Orders", value: "234", change: "+5.2%", icon: <ShoppingCart className="h-7 w-7 text-secondary" />, colorClass: "text-secondary" },
+    { title: "Active Users", value: "1,287", change: "-2.1%", icon: <UsersRound className="h-7 w-7 text-accent" />, colorClass: "text-accent" },
+    { title: "Conversion Rate", value: "4.7%", change: "+0.8%", icon: <Target className="h-7 w-7 text-primary" />, colorClass: "text-primary" },
   ];
 
+  const CustomTooltip = ({ active, payload, label }: any) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="p-3 bg-popover/90 border border-border rounded-lg shadow-xl text-popover-foreground">
+          <p className="label font-semibold text-sm">{`${label}`}</p>
+          {payload.map((pld: any, index: number) => (
+             <p key={index} style={{ color: pld.color }} className="text-xs">{`${pld.name}: ${pld.value.toLocaleString()}`}</p>
+          ))}
+        </div>
+      );
+    }
+    return null;
+  };
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
         {kpis.map(kpi => (
-          <Card key={kpi.title} className="shadow-lg">
+          <Card key={kpi.title} className="shadow-xl bg-card/80 backdrop-blur-sm border-border/50 hover:shadow-primary/10 transition-shadow">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{kpi.title}</CardTitle>
+              <CardTitle className="text-base font-medium text-muted-foreground">{kpi.title}</CardTitle>
               {kpi.icon}
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{kpi.value}</div>
-              <p className={`text-xs ${kpi.change.startsWith('+') ? 'text-primary' : 'text-muted-foreground'}`}>
+              <div className={`text-3xl font-bold ${kpi.colorClass}`}>{kpi.value}</div>
+              <p className={`text-xs ${kpi.change.startsWith('+') ? 'text-primary' : 'text-destructive/80'}`}>
                 {kpi.change} from last month
               </p>
             </CardContent>
@@ -77,78 +96,80 @@ export default function AdminDashboardPage() {
         ))}
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2">
-        <Card className="shadow-lg">
+      <div className="grid gap-8 md:grid-cols-2">
+        <Card className="shadow-xl bg-card/80 backdrop-blur-sm border-border/50">
           <CardHeader>
-            <CardTitle className="font-headline">Monthly Sales Overview</CardTitle>
-            <CardDescription>Revenue and units sold per month.</CardDescription>
+            <CardTitle className="font-bold text-xl flex items-center"><Activity className="mr-2 text-primary"/>Monthly Sales Overview</CardTitle>
+            <CardDescription>Revenue and units sold per month trends.</CardDescription>
           </CardHeader>
-          <CardContent className="h-[300px]">
+          <CardContent className="h-[350px] p-2">
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={monthlySalesData}>
-                <XAxis dataKey="month" stroke="hsl(var(--muted-foreground))" fontSize={12} />
-                <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} />
-                <Tooltip contentStyle={{ backgroundColor: 'hsl(var(--background))', border: '1px solid hsl(var(--border))' }}/>
-                <Legend />
-                <Line type="monotone" dataKey="revenue" stroke="hsl(var(--primary))" activeDot={{ r: 8 }} name="Revenue ($)" />
-                <Line type="monotone" dataKey="sales" stroke="hsl(var(--secondary))" name="Units Sold" />
+              <LineChart data={monthlySalesData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border)/0.5)" />
+                <XAxis dataKey="month" stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false}/>
+                <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => `$${value/1000}k`}/>
+                <Tooltip content={<CustomTooltip />} cursor={{ fill: 'hsl(var(--primary)/0.1)' }}/>
+                <Legend wrapperStyle={{fontSize: "0.8rem"}}/>
+                <Line type="monotone" dataKey="revenue" strokeWidth={2} stroke="hsl(var(--primary))" activeDot={{ r: 7, strokeWidth:2, fill:'hsl(var(--background))' }} name="Revenue ($)" dot={{r:4, fill:'hsl(var(--primary))'}}/>
+                <Line type="monotone" dataKey="sales" strokeWidth={2} stroke="hsl(var(--secondary))" name="Units Sold" dot={{r:4, fill:'hsl(var(--secondary))'}} activeDot={{ r: 7, strokeWidth:2, fill:'hsl(var(--background))' }}/>
               </LineChart>
             </ResponsiveContainer>
           </CardContent>
         </Card>
 
-        <Card className="shadow-lg">
+        <Card className="shadow-xl bg-card/80 backdrop-blur-sm border-border/50">
           <CardHeader>
-            <CardTitle className="font-headline">Product Category Distribution</CardTitle>
+            <CardTitle className="font-bold text-xl flex items-center"><PieChartIcon className="mr-2 text-secondary"/>Product Category Distribution</CardTitle>
             <CardDescription>Sales distribution by product category.</CardDescription>
           </CardHeader>
-          <CardContent className="h-[300px]">
+          <CardContent className="h-[350px] flex items-center justify-center p-2">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
-                <Pie data={productCategoryData} cx="50%" cy="50%" labelLine={false} outerRadius={100} fill="hsl(var(--primary))" dataKey="value" 
-                     label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                <Pie 
+                    data={productCategoryData} 
+                    cx="50%" 
+                    cy="50%" 
+                    labelLine={false} 
+                    outerRadius="80%" 
+                    fill="hsl(var(--primary))" 
+                    dataKey="value" 
+                    stroke="hsl(var(--border))"
+                    label={({ name, percent, fill }) => <text x={0} y={0} dy={8} textAnchor="middle" fill={fill} fontSize={12} fontWeight="bold">{`${name} ${(percent * 100).toFixed(0)}%`</text>}
                 >
                   {productCategoryData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={CHART_COLORS[index % CHART_COLORS.length]} />
+                    <Cell key={`cell-${index}`} fill={CHART_COLORS_THEME[index % CHART_COLORS_THEME.length]} />
                   ))}
                 </Pie>
-                <Tooltip contentStyle={{ backgroundColor: 'hsl(var(--background))', border: '1px solid hsl(var(--border))' }} />
-                <Legend />
+                <Tooltip content={<CustomTooltip />} cursor={{ fill: 'hsl(var(--primary)/0.1)' }}/>
+                <Legend wrapperStyle={{fontSize: "0.8rem"}}/>
               </PieChart>
             </ResponsiveContainer>
           </CardContent>
         </Card>
       </div>
       
-      <Card className="shadow-lg">
+      <Card className="shadow-xl bg-card/80 backdrop-blur-sm border-border/50">
         <CardHeader>
-          <CardTitle className="font-headline">AI Sales Report Generation</CardTitle>
+          <CardTitle className="font-bold text-xl">AI Sales Report Generation</CardTitle>
            <CardDescription>Generate a detailed sales report using AI.</CardDescription>
         </CardHeader>
         <CardContent>
-          <Button onClick={handleGenerateReport} disabled={isGeneratingReport}>
-            {isGeneratingReport && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          <Button onClick={handleGenerateReport} disabled={isGeneratingReport} size="lg" variant="secondary">
+            {isGeneratingReport && <Loader2 className="mr-2 h-5 w-5 animate-spin" />}
             Generate Sales Report
           </Button>
           {reportData && (
-            <div className="mt-6 p-4 border rounded-md bg-muted/30">
-              <h3 className="text-lg font-semibold mb-2">Generated Report Summary:</h3>
-              <p className="text-sm text-muted-foreground mb-4 whitespace-pre-line">{reportData.summary}</p>
-              <h3 className="text-lg font-semibold mb-2">Full Report:</h3>
-              <div className="text-sm text-muted-foreground whitespace-pre-line max-h-60 overflow-y-auto border p-2 rounded">
+            <div className="mt-6 p-6 border border-border/50 rounded-lg bg-card/50">
+              <h3 className="text-lg font-semibold mb-3 text-primary">Generated Report Summary:</h3>
+              <p className="text-sm text-muted-foreground mb-6 whitespace-pre-line leading-relaxed">{reportData.summary}</p>
+              <h3 className="text-lg font-semibold mb-3 text-secondary">Full Report:</h3>
+              <div className="text-sm text-muted-foreground whitespace-pre-line max-h-80 overflow-y-auto border border-border/30 p-4 rounded-md bg-background/70 font-mono">
                 {reportData.report}
               </div>
-               {/* In a real app, this might be a link to download the report */}
             </div>
           )}
         </CardContent>
       </Card>
-
     </div>
   );
 }
-
-// Lucide icons used in KPIs (if not available, you might need to find alternatives or remove them)
-// const Users = ({className}: {className?: string}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>;
-// const ShoppingCart = ({className}: {className?: string}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>;
-// const TrendingUp = ({className}: {className?: string}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>;
