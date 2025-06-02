@@ -16,16 +16,18 @@ const buttonVariants = cva(
           "bg-destructive text-destructive-foreground hover:bg-destructive/90 shadow-sm",
         outline:
           "border border-primary bg-transparent text-primary hover:bg-primary hover:text-primary-foreground shadow-sm",
-        secondary: // For less prominent actions, using themed blue
+        secondary: // For less prominent actions, using themed blue or subtle dark
           "bg-primary/10 text-primary hover:bg-primary/20 border border-primary/30 shadow-sm",
         ghost: "hover:bg-white/10 hover:text-foreground", // Subtle actions on dark bg
         link: "text-primary underline-offset-4 hover:underline hover:text-primary/80",
+        darkLozange: "bg-card hover:bg-card/80 text-card-foreground border border-white/10 px-4 py-2 text-sm h-auto rounded-lg justify-between", // For hero card lozenges
+        iconDark: "bg-foreground/10 hover:bg-foreground/20 text-foreground rounded-full h-9 w-9 p-0", // For small dark icon buttons
       },
       size: {
         default: "h-10 px-4 py-2",
         sm: "h-9 rounded-lg px-3", // slightly less rounded for sm
         lg: "h-12 rounded-xl px-6 text-base",
-        icon: "h-10 w-10 rounded-xl",
+        icon: "h-10 w-10 rounded-xl p-0", // Ensure p-0 for true icon button behavior
       },
     },
     defaultVariants: {

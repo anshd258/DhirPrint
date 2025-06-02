@@ -3,39 +3,24 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
-import { Printer, Palette, Lightbulb, ArrowRight, Sparkles, Zap, ShoppingBag, Settings, ShieldCheck, BarChart } from "lucide-react";
+import { Printer, Palette, Lightbulb, ArrowRight, Sparkles, Zap, ShoppingBag, Settings, ShieldCheck, BarChart, Search } from "lucide-react";
 
-const productCategories = [
-  {
-    name: "Flex Banners",
-    description: "Durable and vibrant flex banners for all your advertising needs.",
-    link: "/products/flex-banners",
-    image: "https://placehold.co/600x800.png", // More portrait
-    imageHint: "outdoor advertising" // More specific hint
-  },
-  {
-    name: "Acrylic Signs",
-    description: "Sleek and modern acrylic signs for a professional look.",
-    link: "/products/acrylic-signs",
-    image: "https://placehold.co/600x800.png",
-    imageHint: "office signage"
-  },
-  {
-    name: "Neon Signs",
-    description: "Eye-catching custom neon signs to make your brand glow.",
-    link: "/products/neon-signs",
-    image: "https://placehold.co/600x800.png",
-    imageHint: "custom lighting"
-  },
+// Mock product data - in a real app, this would come from a DB
+const mockProducts = [
+  { id: 'neon001', name: 'Custom Neon Light', category: 'Neon Sign', description: 'Bright and customizable neon light sign. Make a statement with vibrant colors and unique designs.', basePrice: 150, defaultImageUrl: 'https://placehold.co/600x800.png', imageHint: "custom lighting" },
+  { id: 'flex001', name: 'Standard Flex Banner', category: 'Flex Banner', description: 'High-quality flex banner for outdoor use. Perfect for events and promotions.', basePrice: 25, defaultImageUrl: 'https://placehold.co/600x400.png', imageHint: "outdoor advertising" },
+  { id: 'acrylic001', name: 'Clear Acrylic Sign', category: 'Acrylic Sign', description: 'Elegant clear acrylic sign with custom printing. Ideal for office decor and branding.', basePrice: 50, defaultImageUrl: 'https://placehold.co/600x400.png', imageHint: "office signage" },
 ];
+
+const featuredProduct = mockProducts[0]; // Custom Neon Light
+const secondaryProducts = mockProducts.slice(1); // Flex Banner and Acrylic Sign
 
 const heroFeatures = [
-    { title: "Banners", icon: <Printer size={20}/>, description: "High-quality vinyl & flex." },
-    { title: "Signs", icon: <Palette size={20}/>, description: "Acrylic, metal, and more." },
-    { title: "Neon", icon: <Lightbulb size={20}/>, description: "Custom LED neon designs." },
-    { title: "AI Design", icon: <Sparkles size={20}/>, description: "Generate unique concepts." },
+    { title: "Banners", icon: <Printer size={16}/>, link: "/products/flex-banners" },
+    { title: "Signs", icon: <Palette size={16}/>, link: "/products/acrylic-signs" },
+    { title: "Neon", icon: <Lightbulb size={16}/>, link: "/products/neon-signs" },
+    { title: "AI Design", icon: <Sparkles size={16}/>, link: "/product/ai-designer" }, // Example link
 ];
-
 
 const features = [
   {
@@ -60,23 +45,22 @@ export default function HomePage() {
     <div className="space-y-20 md:space-y-28">
       {/* Hero Section */}
       <section className="relative py-20 md:py-32 min-h-[70vh] md:min-h-[80vh] flex items-center">
-        {/* Background Glow / Image */}
         <div 
           className="absolute inset-0 -z-10 overflow-hidden"
         >
           <Image 
-            src="https://placehold.co/1920x1080.png" // Placeholder for a space/abstract background
+            src="https://placehold.co/1920x1080.png" 
             alt="Abstract background"
             layout="fill"
             objectFit="cover"
             quality={80}
-            className="opacity-30"
-            data-ai-hint="abstract gradient"
+            className="opacity-20" // Reduced opacity for darker feel
+            data-ai-hint="abstract space"
           />
           <div 
             className="absolute inset-0"
             style={{
-              background: 'radial-gradient(circle at 50% 30%, hsl(var(--primary) / 0.25) 0%, transparent 60%)'
+              background: 'radial-gradient(circle at 50% 30%, hsl(var(--primary) / 0.15) 0%, transparent 70%)' // Softer glow
             }}
           />
         </div>
@@ -104,21 +88,38 @@ export default function HomePage() {
           <div className="md:col-span-5">
             <Card className="glassmorphic p-6 md:p-8 rounded-2xl">
               <CardHeader className="p-0 mb-6">
-                <CardTitle className="text-2xl font-bold text-foreground">Design & Order</CardTitle>
-                <p className="text-sm text-muted-foreground">Quickly configure your custom print.</p>
+                <CardTitle className="text-2xl font-bold text-foreground">Quick Configure</CardTitle>
+                <p className="text-sm text-muted-foreground">Select a product type to start.</p>
               </CardHeader>
-              <CardContent className="p-0 space-y-4">
-                {heroFeatures.map(feature => (
-                    <div key={feature.title} className="p-3 rounded-lg bg-background/30 border border-white/10 hover:bg-background/50 transition-colors cursor-pointer flex items-center gap-3">
-                        <span className="text-primary p-2 bg-primary/10 rounded-md">{feature.icon}</span>
-                        <div>
-                            <h4 className="font-semibold text-foreground">{feature.title}</h4>
-                            <p className="text-xs text-muted-foreground">{feature.description}</p>
-                        </div>
-                    </div>
-                ))}
-                <Button variant="primary" className="w-full text-lg py-6 mt-4">
-                  Start Your Design <ArrowRight className="ml-2 h-5 w-5"/>
+              <CardContent className="p-0 space-y-3">
+                <div className="grid grid-cols-2 gap-3">
+                  {heroFeatures.slice(0,2).map(feature => (
+                     <Link href={feature.link} key={feature.title}>
+                        <Button variant="secondary" className="w-full justify-between px-3 py-2 text-sm h-auto bg-white/5 hover:bg-white/10 text-foreground">
+                            <div className="flex items-center gap-2">
+                                {feature.icon}
+                                <span>{feature.title}</span>
+                            </div>
+                            <ArrowRight size={16} className="text-muted-foreground"/>
+                        </Button>
+                     </Link>
+                  ))}
+                </div>
+                 <div className="grid grid-cols-2 gap-3">
+                  {heroFeatures.slice(2,4).map(feature => (
+                     <Link href={feature.link} key={feature.title}>
+                        <Button variant="secondary" className="w-full justify-between px-3 py-2 text-sm h-auto bg-white/5 hover:bg-white/10 text-foreground">
+                             <div className="flex items-center gap-2">
+                                {feature.icon}
+                                <span>{feature.title}</span>
+                            </div>
+                            <ArrowRight size={16} className="text-muted-foreground"/>
+                        </Button>
+                     </Link>
+                  ))}
+                </div>
+                <Button variant="default" className="w-full text-base py-3 mt-4 bg-foreground text-background hover:bg-foreground/90">
+                  Start Your Design <ArrowRight className="ml-2 h-4 w-4"/>
                 </Button>
               </CardContent>
             </Card>
@@ -126,43 +127,53 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Product Categories Section - "Popular" */}
-      <section>
-        <div className="text-left mb-12 md:mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight">Popular Categories</h2>
-            <p className="text-md text-muted-foreground mt-3 max-w-xl">Choose a category to start designing your custom print masterpiece.</p>
+      {/* Popular Designs Section - New Layout */}
+      <section className="container mx-auto">
+        <div className="flex justify-between items-center mb-8 md:mb-12">
+            <h2 className="text-4xl md:text-5xl font-extrabold text-foreground tracking-tight">Popular Designs</h2>
+            <Link href="/products" className="text-sm text-primary hover:text-primary/80 flex items-center gap-1">
+                More designs <ArrowRight size={16}/>
+            </Link>
         </div>
-        <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
-          {productCategories.map((category) => (
-            <Card key={category.name} className="glassmorphic rounded-2xl overflow-hidden shadow-xl group flex flex-col">
-              <CardHeader className="p-0 relative h-80 w-full"> {/* Increased height */}
-                <Image 
-                  src={category.image} 
-                  alt={category.name} 
-                  layout="fill" 
-                  objectFit="cover" 
-                  data-ai-hint={category.imageHint} 
-                  className="group-hover:scale-105 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
-                <div className="absolute bottom-0 left-0 p-6">
-                    <CardTitle className="text-2xl font-semibold text-white mb-1">{category.name}</CardTitle>
-                </div>
-              </CardHeader>
-              <CardContent className="p-6 flex-grow">
-                <p className="text-muted-foreground text-sm mb-4">{category.description}</p>
-              </CardContent>
-              <CardFooter className="p-6 mt-auto">
-                 <Link href={category.link} className="w-full">
-                    <Button variant="outline" className="w-full border-primary/70 text-primary hover:bg-primary hover:text-primary-foreground transition-colors duration-300 py-3 group-hover:border-primary shadow-sm hover:shadow-md">
-                        Explore {category.name} <ArrowRight className="ml-2 h-4 w-4"/>
-                    </Button>
-                 </Link>
-              </CardFooter>
+        
+        <div className="grid md:grid-cols-2 gap-6 lg:gap-8 items-start">
+          {/* Left Column - Featured Product */}
+          <Link href={`/product/${featuredProduct.id}`} className="block group">
+            <Card className="glassmorphic rounded-2xl p-6 md:p-8 h-full flex flex-col justify-between min-h-[300px] hover:border-primary/50 transition-all duration-300">
+              <div>
+                <h3 className="text-3xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors">{featuredProduct.name}</h3>
+                <p className="text-muted-foreground text-sm mb-6 line-clamp-3">{featuredProduct.description}</p>
+              </div>
+              <Button variant="default" className="w-full mt-auto bg-foreground text-background hover:bg-foreground/90 py-3 text-base">
+                Customize This Design <ArrowRight className="ml-2 h-4 w-4"/>
+              </Button>
             </Card>
-          ))}
+          </Link>
+
+          {/* Right Column - Secondary Products */}
+          <div className="space-y-6 lg:space-y-8">
+            {secondaryProducts.map((product) => (
+              <Link key={product.id} href={`/product/${product.id}`} className="block group">
+                <Card className="glassmorphic rounded-2xl p-6 flex flex-col justify-between min-h-[180px] hover:border-primary/50 transition-all duration-300">
+                  <div className="flex justify-between items-start">
+                    <h4 className="text-xl font-semibold text-foreground mb-1 group-hover:text-primary transition-colors">{product.name}</h4>
+                    <div className="bg-card/80 text-sm text-primary-foreground px-3 py-1 rounded-full font-medium">
+                      from ${product.basePrice.toFixed(2)}
+                    </div>
+                  </div>
+                  <p className="text-muted-foreground text-xs mb-4 line-clamp-2 flex-grow">{product.description}</p>
+                  <div className="flex justify-end mt-auto">
+                    <Button variant="secondary" size="icon" className="bg-foreground/10 hover:bg-foreground/20 text-foreground rounded-full h-9 w-9">
+                        <ArrowRight size={18}/>
+                    </Button>
+                  </div>
+                </Card>
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
+
 
       {/* Features Section */}
       <section className="py-16 md:py-20">
