@@ -1,3 +1,4 @@
+
 import type {Config} from 'tailwindcss';
 
 export default {
@@ -10,15 +11,15 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        body: ['Manrope', 'sans-serif'], // Updated font
-        headline: ['Manrope', 'sans-serif'], // Updated font
+        body: ['Manrope', 'sans-serif'], 
+        headline: ['Manrope', 'sans-serif'], 
         code: ['monospace'],
       },
       colors: {
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {
-          DEFAULT: 'hsl(var(--card))',
+          DEFAULT: 'hsl(var(--card))', // Base for cards, may be transparent
           foreground: 'hsl(var(--card-foreground))',
         },
         popover: {
@@ -67,9 +68,11 @@ export default {
         },
       },
       borderRadius: {
-        lg: 'var(--radius)', // using the value from globals.css (0.75rem)
-        md: 'calc(var(--radius) - 2px)',
-        sm: 'calc(var(--radius) - 4px)',
+        lg: 'var(--radius)', 
+        md: 'calc(var(--radius) - 4px)', // Adjusted for 1rem base
+        sm: 'calc(var(--radius) - 8px)', // Adjusted for 1rem base
+        xl: 'var(--radius)', // Explicitly use var --radius for rounded-xl
+        '2xl': 'calc(var(--radius) + 0.5rem)', // For even more rounded elements like in ref
       },
       keyframes: {
         'accordion-down': {

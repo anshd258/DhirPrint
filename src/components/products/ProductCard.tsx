@@ -12,10 +12,10 @@ interface ProductCardProps {
 
 export default function ProductCard({ product }: ProductCardProps) {
   return (
-    <Card className="bg-card border-border/70 overflow-hidden shadow-lg hover:shadow-primary/10 transition-all duration-300 flex flex-col h-full group">
+    <Card className="glassmorphic rounded-2xl overflow-hidden shadow-lg hover:shadow-primary/20 transition-all duration-300 flex flex-col h-full group">
       <CardHeader className="p-0">
         <Link href={`/product/${product.id}`} className="block">
-          <div className="aspect-[4/3] relative w-full overflow-hidden"> {/* Adjusted aspect ratio */}
+          <div className="aspect-[4/3] relative w-full overflow-hidden">
             <Image
               src={product.defaultImageUrl || `https://placehold.co/600x450.png?text=${product.name.replace(/\s/g, '+')}`}
               alt={product.name}
@@ -24,7 +24,7 @@ export default function ProductCard({ product }: ProductCardProps) {
               className="object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out"
               data-ai-hint="product photo"
             />
-             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/10 opacity-70 group-hover:opacity-90 transition-opacity duration-300"></div>
+             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/20 opacity-70 group-hover:opacity-90 transition-opacity duration-300"></div>
           </div>
         </Link>
       </CardHeader>
@@ -37,13 +37,13 @@ export default function ProductCard({ product }: ProductCardProps) {
             <Sparkles className="w-3.5 h-3.5 mr-1.5 text-secondary"/> AI Design Assistance
         </p>
       </CardContent>
-      <CardFooter className="p-5 pt-0 border-t border-border/50 mt-auto bg-card/50">
+      <CardFooter className="p-5 pt-0 mt-auto">
         <div className="flex justify-between items-center w-full">
-          <p className="text-lg font-bold text-primary">
+          <p className="text-xl font-bold text-primary"> {/* Increased price font size */}
             ${product.basePrice.toFixed(2)}
           </p>
           <Link href={`/product/${product.id}`} passHref>
-            <Button variant="default" size="sm" className="group-hover:bg-primary/90">
+            <Button variant="primary" size="sm" className="group-hover:opacity-90"> {/* Primary is now white button */}
               Customize <ArrowRight className="ml-1.5 h-4 w-4" />
             </Button>
           </Link>

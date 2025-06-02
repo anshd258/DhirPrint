@@ -4,86 +4,93 @@
 @tailwind utilities;
 
 body {
-  font-family: 'Manrope', sans-serif; /* Updated font */
+  font-family: 'Manrope', sans-serif;
 }
 
 @layer base {
   :root {
-    /* Dark Theme based on Behance Reference: #000A17 background, #007FFF accent */
-    --background: 212 70% 6%; /* ~ #000A17 - Very Dark Desaturated Blue */
-    --foreground: 210 40% 96%; /* Light Gray / Off-White for text */
+    /* Behance Ref: #000A17 background, #007FFF accent, white/light text */
+    --background: 212 100% 3%; /* Very Dark Desaturated Blue/Black ~#000A17 */
+    --foreground: 210 40% 98%; /* Near White for text */
 
-    --card: 212 65% 9%; /* Slightly Lighter Dark Blue for Cards */
-    --card-foreground: 210 35% 94%;
+    /* Glassmorphic card base */
+    --card-background-rgb: 0, 10, 23; /* For bg-opacity --card value in HSL: 212 100% 4.5% */
+    --card-border-rgb: 255, 255, 255; /* For border-opacity */
+    
+    --card: 212 100% 4.5%; /* Base for card elements, often overridden with opacity */
+    --card-foreground: 210 40% 96%;
 
-    --popover: 212 70% 5%; /* Even Darker for Popovers, close to background */
-    --popover-foreground: 210 35% 94%;
+    --popover: 212 80% 5%; /* Darker popover */
+    --popover-foreground: 210 40% 96%;
 
     --primary: 210 100% 50%; /* #007FFF - Vibrant Blue */
-    --primary-foreground: 210 100% 98%; /* Near White for contrast on blue */
+    --primary-foreground: 210 100% 98%; /* White for text on blue */
 
-    --secondary: 210 80% 40%; /* A slightly muted, darker blue for secondary elements */
+    --secondary: 210 90% 40%; /* Slightly darker/muted blue for secondary elements */
     --secondary-foreground: 210 100% 96%;
 
-    --muted: 212 50% 15%; /* Muted Dark Blue/Gray */
-    --muted-foreground: 210 25% 70%; /* Muted Gray for less important text */
+    --muted: 212 60% 12%; /* Muted Dark Blue/Gray */
+    --muted-foreground: 210 30% 75%; /* Muted Gray for less important text */
 
-    --accent: 210 100% 55%; /* Can be same as primary or a slightly different shade */
+    --accent: 210 100% 55%; /* Can be same as primary or slightly different */
     --accent-foreground: 210 100% 98%;
 
-    --destructive: 0 60% 50%; /* A clearer red for dark themes */
+    --destructive: 0 70% 55%; /* A clearer red for dark themes */
     --destructive-foreground: 0 0% 98%;
 
-    --border: 212 50% 12%; /* Subtle border color, darker */
+    --border: 210 30% 25%; /* Subtle border color for general use, can be overridden with opacity */
     --input: 212 50% 10%; /* Dark input background */
     --ring: 210 100% 55%; /* Primary blue for focus rings */
 
-    --chart-1: 210 100% 50%; /* Vibrant Blue */
-    --chart-2: 195 90% 45%; /* Cyanish Blue */
-    --chart-3: 225 90% 60%; /* Indigo/Purple Blue */
-    --chart-4: 200 95% 40%; /* Sky Blue (darker for contrast) */
-    --chart-5: 215 85% 65%; /* Lighter, softer Blue */
+    --chart-1: 210 100% 50%; 
+    --chart-2: 195 90% 45%;
+    --chart-3: 225 90% 60%;
+    --chart-4: 200 95% 40%;
+    --chart-5: 215 85% 65%;
     
-    --radius: 0.75rem; /* Slightly more rounded as per new reference's feel */
+    --radius: 1rem; /* Increased border radius for modern feel (rounded-xl) */
 
     /* Sidebar specific colors - align with new theme */
-    --sidebar-background: 212 70% 4.5%; /* Darkest for sidebar, close to #000A17 */
-    --sidebar-foreground: 210 30% 90%;
-    --sidebar-primary: 210 100% 50%; /* Vibrant Blue for active items */
+    --sidebar-background: 212 100% 2.5%; /* Even Darker for sidebar */
+    --sidebar-foreground: 210 35% 92%;
+    --sidebar-primary: 210 100% 50%; 
     --sidebar-primary-foreground: 210 100% 98%;
     --sidebar-accent: 210 90% 60%;
-    --sidebar-accent-foreground: 212 70% 6%;
-    --sidebar-border: 212 60% 10%;
+    --sidebar-accent-foreground: 212 100% 3%;
+    --sidebar-border: 212 70% 8%;
     --sidebar-ring: 210 100% 50%;
   }
 
   .dark {
-    /* Ensure dark class explicitly uses the same values if it's ever toggled, though it's default now */
-    --background: 212 70% 6%;
-    --foreground: 210 40% 96%;
+    /* Explicitly use the same values for .dark if ever needed, though it's default */
+    --background: 212 100% 3%;
+    --foreground: 210 40% 98%;
+    
+    --card-background-rgb: 0, 10, 23;
+    --card-border-rgb: 255, 255, 255;
 
-    --card: 212 65% 9%;
-    --card-foreground: 210 35% 94%;
+    --card: 212 100% 4.5%;
+    --card-foreground: 210 40% 96%;
 
-    --popover: 212 70% 5%;
-    --popover-foreground: 210 35% 94%;
+    --popover: 212 80% 5%;
+    --popover-foreground: 210 40% 96%;
 
     --primary: 210 100% 50%;
     --primary-foreground: 210 100% 98%;
 
-    --secondary: 210 80% 40%;
+    --secondary: 210 90% 40%;
     --secondary-foreground: 210 100% 96%;
 
-    --muted: 212 50% 15%;
-    --muted-foreground: 210 25% 70%;
+    --muted: 212 60% 12%;
+    --muted-foreground: 210 30% 75%;
 
     --accent: 210 100% 55%;
     --accent-foreground: 210 100% 98%;
 
-    --destructive: 0 60% 50%;
+    --destructive: 0 70% 55%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 212 50% 12%;
+    --border: 210 30% 25%;
     --input: 212 50% 10%;
     --ring: 210 100% 55%;
     
@@ -93,13 +100,13 @@ body {
     --chart-4: 200 95% 40%;
     --chart-5: 215 85% 65%;
 
-    --sidebar-background: 212 70% 4.5%;
-    --sidebar-foreground: 210 30% 90%;
+    --sidebar-background: 212 100% 2.5%;
+    --sidebar-foreground: 210 35% 92%;
     --sidebar-primary: 210 100% 50%;
     --sidebar-primary-foreground: 210 100% 98%;
     --sidebar-accent: 210 90% 60%;
-    --sidebar-accent-foreground: 212 70% 6%;
-    --sidebar-border: 212 60% 10%;
+    --sidebar-accent-foreground: 212 100% 3%;
+    --sidebar-border: 212 70% 8%;
     --sidebar-ring: 210 100% 50%;
   }
 }
@@ -112,4 +119,12 @@ body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
+}
+
+/* Helper for glassmorphism - can be applied to cards */
+.glassmorphic {
+  background-color: rgba(var(--card-background-rgb), 0.15); /* Adjust opacity as needed */
+  backdrop-filter: blur(12px);
+  border-width: 1px;
+  border-color: rgba(var(--card-border-rgb), 0.1); /* Subtle white border */
 }
