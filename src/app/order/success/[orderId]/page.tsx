@@ -15,8 +15,8 @@ export default function OrderSuccessPage() {
     <div className="container mx-auto py-12 flex flex-col items-center justify-center text-center min-h-[calc(100vh-200px)]">
       <Card className="w-full max-w-lg shadow-xl p-4 md:p-8">
         <CardHeader>
-          <div className="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-green-100 mb-6">
-            <CheckCircle className="h-12 w-12 text-green-600" />
+          <div className="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-primary/20 mb-6">
+            <CheckCircle className="h-12 w-12 text-primary" />
           </div>
           <CardTitle className="text-3xl md:text-4xl font-bold font-headline">Order Placed Successfully!</CardTitle>
           <CardDescription className="text-lg text-muted-foreground mt-2">

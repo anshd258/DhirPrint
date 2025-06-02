@@ -2,7 +2,7 @@
 "use client"; // Client component for charts and interactions
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { BarChart, LineChart, PieChart } from "lucide-react"; // Icons for chart types
+import { BarChart, LineChart, PieChart as PieChartIcon, ShoppingCart, Users, TrendingUp } from "lucide-react"; // Icons for chart types and KPIs
 import { ResponsiveContainer, Bar, XAxis, YAxis, Tooltip, Legend, Line, Pie, Cell } from 'recharts'; // Assuming recharts is installed via shadcn/ui
 import { generateSalesReport } from '@/ai/flows/generate-sales-report';
 import { Button } from "@/components/ui/button";
@@ -26,7 +26,7 @@ const productCategoryData = [
   { name: 'Neon Signs', value: 200 },
   { name: 'Other', value: 100 },
 ];
-const COLORS = ['#FF007F', '#007FFF', '#32CD32', '#FFBB28']; // Neon Pink, Electric Blue, Lime Green, Orange
+const CHART_COLORS = ['hsl(var(--chart-1))', 'hsl(var(--chart-2))', 'hsl(var(--chart-3))', 'hsl(var(--chart-4))'];
 
 export default function AdminDashboardPage() {
   const { toast } = useToast();
@@ -55,7 +55,7 @@ export default function AdminDashboardPage() {
     { title: "Total Revenue", value: "$12,345", change: "+12.5%", icon: <BarChart className="h-6 w-6 text-primary" /> },
     { title: "New Orders", value: "234", change: "+5.2%", icon: <ShoppingCart className="h-6 w-6 text-secondary" /> },
     { title: "Active Users", value: "1,287", change: "-2.1%", icon: <Users className="h-6 w-6 text-accent" /> },
-    { title: "Conversion Rate", value: "4.7%", change: "+0.8%", icon: <TrendingUp className="h-6 w-6 text-green-500" /> },
+    { title: "Conversion Rate", value: "4.7%", change: "+0.8%", icon: <TrendingUp className="h-6 w-6 text-primary" /> },
   ];
 
   return (
@@ -69,7 +69,7 @@ export default function AdminDashboardPage() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{kpi.value}</div>
-              <p className={`text-xs ${kpi.change.startsWith('+') ? 'text-green-500' : 'text-red-500'}`}>
+              <p className={`text-xs ${kpi.change.startsWith('+') ? 'text-primary' : 'text-muted-foreground'}`}>
                 {kpi.change} from last month
               </p>
             </CardContent>
@@ -105,11 +105,11 @@ export default function AdminDashboardPage() {
           <CardContent className="h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
-                <Pie data={productCategoryData} cx="50%" cy="50%" labelLine={false} outerRadius={100} fill="#8884d8" dataKey="value" 
+                <Pie data={productCategoryData} cx="50%" cy="50%" labelLine={false} outerRadius={100} fill="hsl(var(--primary))" dataKey="value" 
                      label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
                 >
                   {productCategoryData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    <Cell key={`cell-${index}`} fill={CHART_COLORS[index % CHART_COLORS.length]} />
                   ))}
                 </Pie>
                 <Tooltip contentStyle={{ backgroundColor: 'hsl(var(--background))', border: '1px solid hsl(var(--border))' }} />
@@ -149,6 +149,6 @@ export default function AdminDashboardPage() {
 }
 
 // Lucide icons used in KPIs (if not available, you might need to find alternatives or remove them)
-const Users = ({className}: {className?: string}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>;
-const ShoppingCart = ({className}: {className?: string}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>;
-const TrendingUp = ({className}: {className?: string}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>;
+// const Users = ({className}: {className?: string}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>;
+// const ShoppingCart = ({className}: {className?: string}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>;
+// const TrendingUp = ({className}: {className?: string}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>;

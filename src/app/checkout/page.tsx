@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, ShoppingBag, Truck, CreditCard, CheckCircle } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import Link from 'next/link';
 // TODO: Import and use actual createOrder Cloud Function
 // import { createOrder as createOrderCF } from '@/server-actions/create-order'; // Example path
 
@@ -80,7 +81,7 @@ export default function CheckoutPage() {
       // TODO: Store order in Firestore orders/{orderId} via CF
       // TODO: Clear cart from Firestore via CF or context
       await clearCart(); 
-      toast({ title: "Order Placed!", description: "Thank you for your purchase.", icon: <CheckCircle className="h-5 w-5 text-green-500"/> });
+      toast({ title: "Order Placed!", description: "Thank you for your purchase.", icon: <CheckCircle className="h-5 w-5 text-primary"/> });
       router.push(`/order/success/${mockOrderId}`);
     } catch (error) {
       console.error("Error placing order:", error);

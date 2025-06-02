@@ -8,94 +8,98 @@ body {
 
 @layer base {
   :root {
-    --background: 0 0% 98%; /* Slightly off-white */
-    --foreground: 240 10% 3.9%; /* Standard dark for text */
+    --background: 222 47% 11%; /* Dark Slate Blue */
+    --foreground: 210 40% 98%; /* Almost White */
 
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
+    --card: 222 47% 13%;
+    --card-foreground: 210 40% 98%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
+    --popover: 222 47% 10%;
+    --popover-foreground: 210 40% 98%;
 
-    --primary: 330 100% 50%; /* Neon Pink */
-    --primary-foreground: 0 0% 100%; /* White */
+    --primary: 217 91% 60%; /* Bright Blue */
+    --primary-foreground: 210 40% 98%;
 
-    --secondary: 210 100% 50%; /* Electric Blue */
-    --secondary-foreground: 0 0% 100%; /* White */
+    --secondary: 217 71% 50%; /* Medium Blue */
+    --secondary-foreground: 210 40% 98%;
 
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%; /* Subdued text */
+    --muted: 222 47% 18%;
+    --muted-foreground: 220 20% 65%; /* Light grayish blue */
 
-    --accent: 90 100% 45%; /* Lime Green */
-    --accent-foreground: 240 10% 3.9%; /* Dark text for contrast on lime */
+    --accent: 200 91% 60%; /* Sky Blue */
+    --accent-foreground: 222 47% 11%; /* Dark text for contrast on accent */
 
-    --destructive: 0 72.2% 50.6%; /* Adjusted for better visibility if needed */
-    --destructive-foreground: 0 0% 98%;
+    --destructive: 240 50% 50%; /* A distinct, less vibrant blue for "destructive" states */
+    --destructive-foreground: 210 40% 98%;
 
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 330 100% 50%; /* Neon Pink for focus rings */
+    --border: 222 47% 20%;
+    --input: 222 47% 20%;
+    --ring: 217 91% 60%; /* Primary blue for focus rings */
 
-    --chart-1: 330 100% 50%;
-    --chart-2: 210 100% 50%;
-    --chart-3: 90 100% 45%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
+    --chart-1: 217 91% 60%;
+    --chart-2: 217 71% 50%;
+    --chart-3: 200 91% 60%;
+    --chart-4: 210 70% 65%;
+    --chart-5: 230 60% 70%;
     --radius: 0.5rem;
 
     /* Sidebar specific colors */
-    --sidebar-background: 240 10% 3.9%; /* Dark sidebar */
-    --sidebar-foreground: 0 0% 95%; /* Light text on dark sidebar */
-    --sidebar-primary: 330 100% 50%; /* Neon Pink for active items */
-    --sidebar-primary-foreground: 0 0% 100%; /* White */
-    --sidebar-accent: 90 100% 45%; /* Lime Green for hover/accent */
-    --sidebar-accent-foreground: 240 10% 3.9%; /* Dark text for lime */
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 330 100% 50%;
+    --sidebar-background: 222 47% 9%; /* Even darker blue */
+    --sidebar-foreground: 210 40% 95%;
+    --sidebar-primary: 217 91% 60%;
+    --sidebar-primary-foreground: 210 40% 98%;
+    --sidebar-accent: 200 91% 60%;
+    --sidebar-accent-foreground: 222 47% 11%;
+    --sidebar-border: 222 47% 15%;
+    --sidebar-ring: 217 91% 60%;
   }
 
+  /* Ensure .dark also uses the same blue dark theme if it's ever applied,
+     but :root is now the primary dark theme. */
   .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
 
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
+    --card: 222 47% 13%;
+    --card-foreground: 210 40% 98%;
 
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
+    --popover: 222 47% 10%;
+    --popover-foreground: 210 40% 98%;
 
-    --primary: 330 100% 50%; /* Neon Pink */
-    --primary-foreground: 0 0% 100%; /* White */
+    --primary: 217 91% 60%;
+    --primary-foreground: 210 40% 98%;
 
-    --secondary: 210 100% 50%; /* Electric Blue */
-    --secondary-foreground: 0 0% 100%; /* White */
+    --secondary: 217 71% 50%;
+    --secondary-foreground: 210 40% 98%;
 
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
+    --muted: 222 47% 18%;
+    --muted-foreground: 220 20% 65%;
 
-    --accent: 90 100% 45%; /* Lime Green */
-    --accent-foreground: 240 10% 3.9%; /* Dark text */
+    --accent: 200 91% 60%;
+    --accent-foreground: 222 47% 11%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive: 240 50% 50%;
+    --destructive-foreground: 210 40% 98%;
 
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 330 100% 50%; /* Neon Pink */
+    --border: 222 47% 20%;
+    --input: 222 47% 20%;
+    --ring: 217 91% 60%;
     
-    --chart-1: 330 100% 50%;
-    --chart-2: 210 100% 50%;
-    --chart-3: 90 100% 45%;
+    --chart-1: 217 91% 60%;
+    --chart-2: 217 71% 50%;
+    --chart-3: 200 91% 60%;
+    --chart-4: 210 70% 65%;
+    --chart-5: 230 60% 70%;
 
     /* Dark Sidebar specific colors */
-    --sidebar-background: 240 10% 3.9%;
-    --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 330 100% 50%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 90 100% 45%;
-    --sidebar-accent-foreground: 240 10% 3.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 330 100% 50%;
+    --sidebar-background: 222 47% 9%;
+    --sidebar-foreground: 210 40% 95%;
+    --sidebar-primary: 217 91% 60%;
+    --sidebar-primary-foreground: 210 40% 98%;
+    --sidebar-accent: 200 91% 60%;
+    --sidebar-accent-foreground: 222 47% 11%;
+    --sidebar-border: 222 47% 15%;
+    --sidebar-ring: 217 91% 60%;
   }
 }
 

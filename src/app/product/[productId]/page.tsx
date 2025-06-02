@@ -15,7 +15,7 @@ import { Separator } from '@/components/ui/separator';
 import { useCartContext } from '@/contexts/CartContext';
 import { useToast } from '@/hooks/use-toast';
 import { generateProductImage } from '@/ai/flows/generate-product-image';
-import { Loader2, UploadCloud, Wand2, CheckCircle, Info } from 'lucide-react';
+import { Loader2, UploadCloud, Wand2, CheckCircle, Info, Palette } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 // Mock function to fetch a single product. Replace with actual Firestore fetching.
@@ -136,9 +136,9 @@ export default function ProductPage({ params }: { params: ProductPageParams }) {
     // Mocking check
     const isReady = Math.random() > 0.3; // Simulate DPI check
     if (isReady) {
-      toast({ title: "Print Readiness Verified", description: "Your design looks good to go!", icon: <CheckCircle className="h-4 w-4 text-green-500" /> });
+      toast({ title: "Print Readiness Verified", description: "Your design looks good to go!", icon: <CheckCircle className="h-4 w-4 text-primary" /> });
     } else {
-       toast({ title: "Low Resolution Alert", description: "The image resolution might be too low for the selected size. Consider using a higher resolution image or a smaller print size for best results.", variant: "destructive", duration: 10000, icon: <Info className="h-4 w-4 text-yellow-500" /> });
+       toast({ title: "Low Resolution Alert", description: "The image resolution might be too low for the selected size. Consider using a higher resolution image or a smaller print size for best results.", variant: "destructive", duration: 10000, icon: <Info className="h-4 w-4 text-primary" /> });
     }
   }
 
@@ -237,7 +237,7 @@ export default function ProductPage({ params }: { params: ProductPageParams }) {
                   </Button>
                   {generatedImageUrl && (
                      <Alert>
-                      <AlertTitle className="flex items-center gap-2"><CheckCircle className="text-green-500"/> Image Generated!</AlertTitle>
+                      <AlertTitle className="flex items-center gap-2"><CheckCircle className="text-primary"/> Image Generated!</AlertTitle>
                       <AlertDescription>
                         Your AI-generated image is now shown in the preview.
                       </AlertDescription>

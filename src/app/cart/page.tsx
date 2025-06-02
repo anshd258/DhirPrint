@@ -65,7 +65,7 @@ export default function CartPage() {
               </div>
               <div className="flex justify-between">
                 <span>Shipping</span>
-                <span className="text-green-600">FREE</span> {/* Or calculate dynamically */}
+                <span className="text-primary">FREE</span> {/* Or calculate dynamically */}
               </div>
               <div className="flex justify-between">
                 <span>Estimated Tax</span>
