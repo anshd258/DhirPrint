@@ -2,7 +2,7 @@
 "use client";
 
 import Link from 'next/link';
-import { ShoppingCart, User, LogIn, LogOut, Printer, Zap, Settings, ListOrdered, Menu } from 'lucide-react';
+import { ShoppingCart, User, LogIn, LogOut, Printer, Zap, Settings, ListOrdered, Menu, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuthContext } from '@/contexts/AuthContext';
 import { useCartContext } from '@/contexts/CartContext';
@@ -33,8 +33,9 @@ export default function Header() {
 
   const navLinks = [
     { href: "/products", label: "Products" },
-    { href: "/#features", label: "Features" }, // Example link to a section
-    { href: "/#contact", label: "Contact" }, // Example link to a section
+    { href: "/design-studio", label: "Design Studio", icon: <Sparkles size={16} className="mr-1 md:hidden lg:inline-block"/> },
+    // { href: "/#features", label: "Features" }, // Example link to a section - commented out from previous steps
+    // { href: "/#contact", label: "Contact" }, // Example link to a section - commented out from previous steps
   ];
 
   return (
@@ -48,8 +49,8 @@ export default function Header() {
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-6">
           {navLinks.map(link => (
-            <Link key={link.label} href={link.href} className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors">
-              {link.label}
+            <Link key={link.label} href={link.href} className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors flex items-center">
+              {link.icon} {link.label}
             </Link>
           ))}
         </nav>
@@ -129,10 +130,10 @@ export default function Header() {
                     <Link 
                         key={link.label} 
                         href={link.href} 
-                        className="text-lg font-medium text-foreground/90 hover:text-primary transition-colors"
+                        className="text-lg font-medium text-foreground/90 hover:text-primary transition-colors flex items-center"
                         onClick={() => setMobileMenuOpen(false)}
                     >
-                      {link.label}
+                      {link.icon} {link.label}
                     </Link>
                   ))}
                   {!currentUser && (

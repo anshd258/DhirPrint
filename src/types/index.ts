@@ -13,7 +13,7 @@ export interface Product {
   category: 'Flex Banner' | 'Acrylic Sign' | 'Neon Sign';
   description: string;
   materials: string[];
-  sizes: string[];
+  sizes: string[]; // Ensure this is populated for products
   basePrice: number;
   pricingRules?: any; // Rules for material/size adjustments
   imageUrls: string[]; // URLs to product images
@@ -32,6 +32,7 @@ export interface CartItem {
   customizationDetails: {
     designUrl?: string; // URL to uploaded or AI generated image
     overlayText?: string;
+    userDesignId?: string; // Link to a saved UserDesign
   };
   quantity: number;
   unitPrice: number; // Price per unit after customization
@@ -82,7 +83,7 @@ export interface ChatMessage {
 }
 
 export interface ChatSession {
-  id: string;
+  id:string;
   userId: string;
   messages: ChatMessage[];
   createdAt: Date;
@@ -95,4 +96,17 @@ export interface SalesReport {
   criteria: string;
   reportDataUrl: string; // URL to the report file/data
   summary: string;
+}
+
+export interface UserDesign {
+  id: string;
+  userId: string;
+  productType: Product['category'];
+  size: string;
+  prompt: string;
+  specialRequirements?: string;
+  referenceImagePrompt?: string;
+  referenceImageUrl?: string; // URL in Firebase Storage
+  generatedImageUrl: string; // URL in Firebase Storage
+  createdAt: any; // Firestore Timestamp
 }

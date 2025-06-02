@@ -4,3 +4,4 @@ config();
 import '@/ai/flows/answer-design-faq.ts';
 import '@/ai/flows/generate-product-image.ts';
 import '@/ai/flows/generate-sales-report.ts';
+import '@/ai/flows/generate-custom-product-design.ts';
