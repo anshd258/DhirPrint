@@ -5,7 +5,12 @@ import type { Product } from '@/types';
 import { db } from '@/lib/firebase'; // Assuming you have initialized Firebase
 import { collection, getDocs, query, orderBy, limit } from 'firebase/firestore';
 import { Separator } from '@/components/ui/separator';
-
+import { Metadata } from 'next/dist/lib/metadata/types/metadata-interface';
+export const metadata: Metadata = {
+  title: 'Products page',
+  description: 'products for  custom printing services by DhirPrint',
+  keywords:"flex, vinayl, standee, printing, products, skus"
+};
 // Mock function to fetch products. Replace with actual Firestore fetching.
 async function getProducts(): Promise<Product[]> {
   // TODO: Replace with actual Firestore fetching

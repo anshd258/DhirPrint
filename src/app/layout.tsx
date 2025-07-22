@@ -11,6 +11,31 @@ export const metadata: Metadata = {
   title: 'DhirPrint AI',
   description: 'AI-powered custom printing services by DhirPrint',
   manifest: '/manifest.json',
+  keywords: ['flex', 'vinyl', 'standee', 'printing'],
+
+  openGraph: {
+    title: 'DhirPrint AI',
+    description: 'AI-powered custom printing services — smart, simple & user-centric.',
+    url: 'https://dhir-print-tau.vercel.app/',
+    siteName: 'DhirPrint',
+    images: [
+      {
+        url: 'https://dhir-print-tau.vercel.app/logo.png', // make sure this image exists
+        width: 1200,
+        height: 630,
+        alt: 'DhirPrint Preview',
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+
+  twitter: {
+    card: 'summary_large_image',
+    title: 'DhirPrint AI',
+    description: 'Smart printing services powered by AI and great UX.',
+    images: ['https://dhir-print-tau.vercel.app/logo.png'],
+  },
 };
 
 export default function RootLayout({

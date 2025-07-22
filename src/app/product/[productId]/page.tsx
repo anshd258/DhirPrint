@@ -18,7 +18,10 @@ import { generateProductImage } from '@/ai/flows/generate-product-image';
 import { Loader2, UploadCloud, Wand2, CheckCircle, Info, Palette, FolderHeart, Sparkles } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import Link from 'next/link';
+import { Metadata } from 'next/dist/lib/metadata/types/metadata-interface';
 // TODO: Firestore - fetch user designs for this product type
+
+
 
 // Mock function to fetch a single product. Replace with actual Firestore fetching.
 async function getProduct(productId: string): Promise<Product | null> {
