@@ -85,7 +85,7 @@ export default function DesignStudioPage() {
         referenceImagePrompt: referenceImagePrompt || undefined,
       });
       setGeneratedImageUrl(result.generatedImageUrl);
-      toast({ title: "Design Generated!", description: "Your custom design is ready.", icon: <CheckCircle className="h-5 w-5 text-primary" /> });
+      toast({ title: "Design Generated!", description: "Your custom design is ready.", });
     } catch (error: any) {
       console.error("Error generating design:", error);
       toast({ title: "Generation Failed", description: error.message || "Could not generate design. Please try again.", variant: "destructive" });

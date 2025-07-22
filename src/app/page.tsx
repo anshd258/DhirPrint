@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -48,15 +47,16 @@ export default function HomePage() {
         <div 
           className="absolute inset-0 -z-10 overflow-hidden"
         >
-          <Image 
-            src="https://placehold.co/1920x1080.png" 
-            alt="Abstract background"
-            layout="fill"
-            objectFit="cover"
-            quality={80}
-            className="opacity-20" // Reduced opacity for darker feel
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover opacity-20 rounded-md "
             data-ai-hint="abstract space"
-          />
+          >
+            <source src="/assets/videos/bgvideo.webm" type="video/webm" />
+          </video>
           <div 
             className="absolute inset-0"
             style={{
@@ -65,7 +65,7 @@ export default function HomePage() {
           />
         </div>
 
-        <div className="container mx-auto grid md:grid-cols-12 gap-8 items-center relative z-10">
+        <div className="container mx-auto grid md:grid-cols-12 gap-8 items-center relative z-10 p-4">
           <div className="md:col-span-7 text-left">
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold mb-6 text-foreground tracking-tight">
               AI-Powered Custom Prints

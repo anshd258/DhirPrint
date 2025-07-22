@@ -125,7 +125,7 @@ export default function ProductPage({ params }: { params: ProductPageParams }) {
     }
   };
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     if (!product || !finalDesignUrl) return;
     const cartItem: CartItem = {
       id: `${product.id}-${selectedMaterial}-${selectedSize}-${Date.now()}`,
@@ -137,13 +137,13 @@ export default function ProductPage({ params }: { params: ProductPageParams }) {
       customizationDetails: {
         designUrl: finalDesignUrl, 
         overlayText: overlayText,
-        userDesignId: userSelectedDesignId || undefined,
+        userDesignId: userSelectedDesignId ,
       },
       quantity: quantity,
       unitPrice: currentPrice,
       totalPrice: currentPrice * quantity,
     };
-    addItemToCart(cartItem);
+    await addItemToCart(cartItem);
     toast({ title: "Added to Cart!", description: `${product.name} is now in your shopping cart.`, icon: <CheckCircle className="h-5 w-5 text-primary"/> });
   };
   

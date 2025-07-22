@@ -30,9 +30,9 @@ export interface CartItem {
   size: string;
   material: string;
   customizationDetails: {
-    designUrl?: string; // URL to uploaded or AI generated image
-    overlayText?: string;
-    userDesignId?: string; // Link to a saved UserDesign
+    designUrl?: string | null; // URL to uploaded or AI generated image
+    overlayText?: string | null;
+    userDesignId?: string | null; // Link to a saved UserDesign
   };
   quantity: number;
   unitPrice: number; // Price per unit after customization

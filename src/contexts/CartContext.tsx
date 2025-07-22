@@ -73,12 +73,13 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       return;
     }
     setLoading(true);
+    console.log("No items collection reference");
     const itemsColRef = getCartItemsCollectionRef();
     if (!itemsColRef) {
       setLoading(false);
       return;
     }
-
+    console.log(item);
     try {
       const existingItemIndex = cartItems.findIndex(ci => ci.id === item.id);
       let newCartItems;
